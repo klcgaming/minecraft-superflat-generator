@@ -1,0 +1,14 @@
+{
+  "display": "minecraft:glass",
+  "settings": {
+    "biome": "minecraft:plains",
+    "features": true,
+    "lakes": true,
+    "layers": [
+
+
+    ],
+    "structure_overrides": [
+    ]
+  }
+}

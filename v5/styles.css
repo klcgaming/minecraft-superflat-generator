@@ -1,0 +1,29 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+input, select, button {
+  margin-bottom: 10px;
+}
+
+#blocksList {
+  margin-bottom: 20px;
+}
+
+#blocksList div {
+  margin-bottom: 5px;
+  cursor: move;
+}
+
+#codePreview {
+  margin-top: 20px;
+}

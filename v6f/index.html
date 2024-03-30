@@ -4,16 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Minecraft Superflat Generator</title>
-  <link rel="shortcut icon" href="img/diamond_block.png" type="image/x-icon">
   <style>
-    @font-face {
-  font-family: 'CustomFont'; /* Name your custom font */
-  src: url(mcf.woff) format('woff'); /* Path to your .woff font file */
-  font-weight: normal;
-  font-style: normal;
-}
-
-
     /* Add your CSS styles here */
     .block-icon {
       width: 32px;
@@ -22,46 +13,24 @@
     }
     .draggable {
       cursor: move;
-      border: 2px solid black; /* Border style for draggable elements */
-      border-color: rgb(217, 255, 0);
-      background-color: black;
-    }
-   h1,h2,h3,h4,h5,h6 {
-    font-family: Arial, sans-serif;
-   }
-    body {
-      font-family: 'CustomFont', sans-serif; /* Use your custom font with a fallback */
-      display: flex;
-  justify-content: center; /* Horizontal center */
-  align-items: center; /* Vertical center */
-color: rgb(255, 255, 0);
-      background-image: url(src/img/raindowlayers.png);
     }
   </style>
 </head>
 <body>
-  
+  <h1>Minecraft Superflat Generator</h1>
   
   <div>
-    <h1>Minecraft Superflat preset Generator</h1>
     <label for="blockId">Add Block by ID:</label>
     <input type="text" id="blockId">
     <input type="number" id="blockHeight" placeholder="Block Height">
     <button onclick="addBlock()">Add Block</button><br><br>
-<hr>
-<p>lowest layer</p>
+
     <div id="blocksList" ondrop="drop(event)" ondragover="allowDrop(event)"></div><br>
 
-<p>highest layer</p>
-<hr>
     <label for="includeVillages">Include Villages:</label>
     <input type="checkbox" id="includeVillages" onchange="updateSettings()"> <br><br>
-    <label for="includeVillages">Include decorations:</label>
-    <input type="checkbox" id="decorations" onchange="updateSettings()"> <br><br>
-    <label for="includeVillages">Include lakes:</label>
-    <input type="checkbox" id="lakes" onchange="updateSettings()"> <br><br>
 
-    <button onclick="generateSuperflat()">Generate Superflat preset datapack</button><br><br>
+    <button onclick="generateSuperflat()">Generate Superflat</button><br><br>
 
     <h2>Live JSON Preview:</h2>
     <textarea id="liveJsonPreview" rows="20" cols="50" readonly></textarea><br><br>
@@ -136,33 +105,21 @@ color: rgb(255, 255, 0);
       });
     }
 
-
-function updateSettings() {
-  includeVillages = document.getElementById('includeVillages').checked;
-  includeDecor = document.getElementById('decorations').checked;
-  includelakes = document.getElementById('lakes').checked;
-  updateLiveJsonPreview(); // Update live JSON preview when settings change
-}
-
-function updateLiveJsonPreview() {
-  const liveJsonPreview = document.getElementById('liveJsonPreview');
-  const presetObject = {
-    "settings": {
-      "features": includeDecor ? true : undefined, // Add features only if includeDecor is true
-      "lakes": includelakes ? true : undefined, // Add features only if includeDecor is true
-      "layers": [...blocksToAdd], // Update layers in presetObject
-      "structure_overrides": includeVillages ? ["minecraft:villages"] : []
+    function updateSettings() {
+      includeVillages = document.getElementById('includeVillages').checked;
+      updateLiveJsonPreview(); // Update live JSON preview when settings change
     }
-  };
 
-  liveJsonPreview.value = JSON.stringify(presetObject, null, 2); // Update live JSON preview
-}
-
-  // Conditionally add "features" based on includeDecor
-
-
-
-
+    function updateLiveJsonPreview() {
+      const liveJsonPreview = document.getElementById('liveJsonPreview');
+      const presetObject = {
+        "settings": {
+          "layers": [...blocksToAdd], // Update layers in presetObject
+          "structure_overrides": includeVillages ? ["minecraft:villages"] : []
+        }
+      };
+      liveJsonPreview.value = JSON.stringify(presetObject, null, 2); // Update live JSON preview
+    }
 
 
 
@@ -228,7 +185,7 @@ function updateLiveJsonPreview() {
   const url = URL.createObjectURL(zipContent);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'datapack_with_preset.zip';
+  a.download = 'custom_datapack.zip';
 
   // Append the download link to the document and trigger the download
   document.body.appendChild(a);

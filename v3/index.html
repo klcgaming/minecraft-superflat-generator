@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minecraft Superflat Generator</title>
+  <style>
+    /* Add your CSS styles here */
+    .block-icon {
+      width: 32px;
+      height: 32px;
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Minecraft Superflat Generator</h1>
+  
+  <div>
+    <label for="blockId">Add Block by ID:</label>
+    <input type="text" id="blockId">
+    <input type="number" id="blockHeight" placeholder="Block Height">
+    <button onclick="addBlock()">Add Block</button><br><br>
+
+    <div id="blocksList"></div><br>
+
+    <label for="includeVillages">Include Villages:</label>
+    <input type="checkbox" id="includeVillages" onchange="updateSettings()"> <br><br>
+
+    <button onclick="generateSuperflat()">Generate Superflat</button><br><br>
+
+    <h2>Live JSON Preview:</h2>
+    <textarea id="liveJsonPreview" rows="10" cols="50" readonly></textarea><br><br>
+  </div>
+
+  <div id="blockTextures"></div>
+ 
+  <script>
+    let blocksToAdd = [];
+    let includeVillages = false;
+
+    function addBlock() {
+      const blockIdInput = document.getElementById('blockId');
+      const blockId = blockIdInput.value.trim();
+      const blockHeightInput = document.getElementById('blockHeight');
+      const blockHeight = parseInt(blockHeightInput.value);
+
+      if (blockId !== '' && !isNaN(blockHeight) && blockHeight > 0) {
+        blocksToAdd.push({ block: `minecraft:${blockId}`, height: blockHeight });
+        blockIdInput.value = ''; // Clear input fields after adding
+        blockHeightInput.value = ''; 
+        updateBlocksList();
+        updateLiveJsonPreview(); // Update live JSON preview
+      }
+    }
+
+    function updateBlocksList() {
+      const blocksListContainer = document.getElementById('blocksList');
+      blocksListContainer.innerHTML = ''; // Clear previous blocks list
+      
+      blocksToAdd.forEach((blockData, index) => {
+        const blockElement = document.createElement('div');
+        blockElement.textContent = `${blockData.block} (${blockData.height})`;
+        
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove';
+        removeButton.onclick = () => removeBlock(index); // Call removeBlock function with index
+        
+        blockElement.appendChild(removeButton);
+        blocksListContainer.appendChild(blockElement);
+      });
+    }
+
+    function removeBlock(index) {
+      blocksToAdd.splice(index, 1); // Remove block at given index
+      updateBlocksList();
+      updateLiveJsonPreview(); // Update live JSON preview
+    }
+
+    function updateSettings() {
+      includeVillages = document.getElementById('includeVillages').checked;
+      updateLiveJsonPreview(); // Update live JSON preview when settings change
+    }
+
+    function updateLiveJsonPreview() {
+      const liveJsonPreview = document.getElementById('liveJsonPreview');
+      const presetObject = {
+        "settings": {
+          "layers": [...blocksToAdd], // Update layers in presetObject
+          "structure_overrides": includeVillages ? ["minecraft:villages"] : []
+        }
+      };
+      liveJsonPreview.value = JSON.stringify(presetObject, null, 2); // Update live JSON preview
+    }
+
+    async function generateSuperflat() {
+      // Your generateSuperflat logic here
+    }
+
+    function displayBlockTexture(block, container) {
+      // Example: Display block texture (replace with your actual logic)
+      const blockTextureImg = document.createElement('img');
+      blockTextureImg.src = `img/${block}.png`; // Assuming block textures are named accordingly
+      blockTextureImg.alt = block;
+      blockTextureImg.classList.add('block-icon');
+      container.appendChild(blockTextureImg);
+    }
+
+    function processPresetData(data) {
+      // Example: Process preset data and perform actions based on it
+      console.log('Processing preset data:', data);
+    }
+
+    // Initial setup
+    updateBlocksList(); // Update blocks list on page load
+  </script>
+</body>
+</html>
+
